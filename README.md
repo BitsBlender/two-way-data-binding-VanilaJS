@@ -1,2 +1,2 @@
-# two-way-data-binding-VanilaJS
+# two-way-data-binding-VanillaJS
 2 way data binding library 
