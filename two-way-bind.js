@@ -1,41 +1,47 @@
-'use strict'
-var scope = {};
-(function(){
- var elements = document.querySelectorAll('[data-tw-bind]')
- elements.forEach(function(element){
-     if(element.type === 'text'  || element.type==='textarea'){
-         var propToBind = element.getAttribute('data-tw-bind');
-         addScopeProp(propToBind);
-         element.onkeyup = function(){
-             scope[propToBind] = element.value;
-         }
-     };
-     function addScopeProp(prop) {
-         if(!scope.hasOwnProperty(prop)){
-             var value;
-             Object.defineProperty(scope, prop, {
-                 set: function (newValue){
-                     value = newValue;
-                     elements.forEach(function(element){
-                         if(element.getAttribute('data-tw-bind')===prop){
-                             if(element.type && (element.type === 'text' ||
-                                element.type === 'textarea')){
-                                    element.value = newValue;
-                                }
-                                else if(!element.type){
-                                    element.innerHTML = newValue;
-                                }
-                         }
-                     });
-                 },
-                 get: function(){
-                     return value;
-                 },
-                 enumerable: true
-             });
-         }
-     }
- });
-})();
-console.log(scope)
-console.log(scope.name)
+var dataController = function (controller) {
+    let $scope = {};
+    window.onload = function () {
+        (function () {
+            let elements = document.querySelectorAll('[data-bind]')
+            elements.forEach(function (element) {
+                let propToBind = element.getAttribute('data-bind');
+                if (!$scope.hasOwnProperty(propToBind)) {
+                    addScopeProp(propToBind);
+                }
+                let setEvent = function () {
+                    $scope[propToBind] = element.value;
+                }
+                // Multi Browser support
+                element.onchange = setEvent;
+                element.oninput = setEvent;
+                function addScopeProp(prop) {
+                        let value;
+                        Object.defineProperty($scope, prop, {
+                            set: function (newValue) {
+                                value = newValue;
+                                elements.forEach(function (element) {
+                                    if (element.getAttribute('data-bind') === prop) {
+                                        if (element.type && (element.type === 'text' ||
+                                            element.type === 'textarea')) {
+                                            element.value = newValue;
+                                        }
+                                        else if (!element.type) {
+                                            element.innerHTML = newValue;
+                                            element.value = newValue;
+                                        }
+                                    }
+                                });
+                            },
+                            get: function () {
+                                return value;
+                            },
+                            enumerable: true
+                        });
+                }
+            });
+        })();
+        controller($scope);
+    }
+
+}
+

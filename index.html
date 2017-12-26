@@ -1,15 +1,35 @@
 <!DOCTYPE html>
 <html>
-    <head lang="eng">
-        <meta charset="UTF-8">
-        <title>Two Way Data Bindings</title>
-    </head>
-    <body>
-        Name:<input data-tw-bind="name" type="text">
-        <span data-tw-bind="name"></span>
-        <hr/>
-        Surname: <input data-tw-bind="surname" type="text">
-        <span data-tw-bind="surname"></span>
-        <script src="two-way-bind.js"></script>
-    </body>
+
+<head lang="eng">
+    <meta charset="UTF-8">
+    <title>Two Way Data Bindings</title>
+    <script src="two-way-bind.js"></script>
+</head>
+
+<body>
+    Name:
+    <input data-bind="name" type="text">
+    <p data-bind="name"></p>
+    <hr/>
+    <script>
+        dataController(function ($scope) {
+            $scope.name = "PhaniKumar"
+            $scope.score = 50
+        })
+    </script>
+    <p>Give score</p>
+    <input type="range" data-bind="score" min="0" max="100">
+    <progress data-bind="score" min=0 max=100></progress>
+    <hr/>
+    <select data-bind="selection">
+        <option disabled selected value> -- select an option -- </option>
+        <option value="Audi">Audi
+            <option value="BMW">BMW
+                <option value="Mercedes">Mercedes
+                    <option value="Volvo">Volvo
+    </select>
+    you selected: <span data-bind="selection"></span>
+</body>
+
 </html>
